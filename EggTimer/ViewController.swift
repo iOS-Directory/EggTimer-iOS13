@@ -7,10 +7,11 @@
 //
 
 import UIKit
+
 import AVFoundation
 
 class ViewController: UIViewController {
-
+    
     //Label to display countdown
     @IBOutlet var timerLabel: UILabel!
     
@@ -22,18 +23,19 @@ class ViewController: UIViewController {
     var totalTime = 0
     var countCompleted = true
     //Use a dictionary instead (Like an object but with []
-       let eggTimes = [
-           "Soft": 5,
-           "Medium": 7,
-           "Hard": 12
-       ]
-  
+    let eggTimes = [
+        "Soft": 5,
+        "Medium": 7,
+        "Hard": 12
+    ]
+    
+    
     var player: AVAudioPlayer!
     
     var timer = Timer()
     //On click will run the following code
     @IBAction func myButton(_ sender: UIButton) {
-       
+        
         //get the button being pressed
         let hardness = sender.currentTitle!
         totalTime = eggTimes[hardness]!
@@ -44,23 +46,27 @@ class ViewController: UIViewController {
     //Timer func
     override func viewDidLoad() {
         super.viewDidLoad()
-
-     timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateCounter), userInfo: nil, repeats: true)
+        
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateCounter), userInfo: nil, repeats: true)
     }
- 
+    
     @objc func updateCounter() {
         
         if (counter > 0 && !countCompleted ) {
             timerLabel.text = String(counter)
-           let completionPercentage =  ((Float(totalTime) - Float(counter)) / Float(totalTime)) * 1
+            
+            //Count down progress bar
+            let completionPercentage =  ((Float(totalTime) - Float(counter)) / Float(totalTime))
+            
             progressBar.progress =  completionPercentage
+            
             counter -= 1
-           print(counter)
+            print(counter)
         }else if(counter == 0 && !countCompleted){
             timerLabel.text = "Done!"
             progressBar.progress = 1.0
             playSound()
-              countCompleted = true
+            countCompleted = true
         }else{
             timerLabel.text = "Start"
         }
